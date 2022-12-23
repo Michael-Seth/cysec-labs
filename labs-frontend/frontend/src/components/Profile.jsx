@@ -1,19 +1,23 @@
 import axios from 'axios';
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef } from 'react'
+/*
+this is just an example of when you need to send the token you store in the cookies
 
+*/
+import Cookies from 'js-cookie';
 
-import { UserContext } from '../App';
 
 const Profile = () => {
     
     const emailRef = useRef("");
-   
+    
     const usernameRef = useRef("");
     const firstnameRef = useRef("");
     const lastnameRef = useRef("");
 
+    const user = JSON.parse(Cookies.get('user'))
 
-const [user, setUser] = useContext(UserContext)
+
     const handleSubmit = async (e) => {
          e.preventDefault();
          const data = {
@@ -25,7 +29,7 @@ const [user, setUser] = useContext(UserContext)
          };
         try {
             const resp = await axios.post(
-              "/users/update-profile",
+              "http://localhost:8081/api/v1/users/update-profile",
               { updateData: data },
               {
                 headers: {
@@ -34,7 +38,7 @@ const [user, setUser] = useContext(UserContext)
               }
             ); 
             
-      
+          console.log(resp.data)
           window.location.reload()
         } catch (error) {
             console.log(error)

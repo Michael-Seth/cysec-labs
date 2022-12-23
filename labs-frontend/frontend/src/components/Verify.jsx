@@ -9,7 +9,7 @@ const Verify = () => {
         try {
             
             const data = { token: tokenRef.current.value };
-            const resp = await axios.post('/users/verify', {
+            const resp = await axios.post('http://localhost:8081/api/v1/users/verify', {
                 verifyData: data
             })
             console.log(resp)

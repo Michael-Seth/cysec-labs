@@ -20,7 +20,7 @@ const navigate = useNavigate()
            password: passRef.current.value,
          };
          try {
-           const resp = await axios.post("/users/register", {
+           const resp = await axios.post("http://localhost:8081/api/v1/users/register", {
              user: data,
            });
              console.log(resp.status);

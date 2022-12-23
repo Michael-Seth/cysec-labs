@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useRef } from 'react'
-
+import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
     const usernameRef = useRef('')
@@ -11,16 +11,27 @@ const navigate =useNavigate()
         const data = { username: usernameRef.current.value, password: passRef.current.value }
         try {
             
-            const resp = await axios.post('/users/login', { user: data })
+            const resp = await axios.post('http://localhost:8081/api/v1/users/login', { user: data })
             console.log(resp)
             if (resp.status === 200) {
-       
-              sessionStorage.setItem("token", JSON.stringify(resp.data))
-                
-                window.location.href = '/'
+                console.log(resp.data);
+                navigate('/')
 
-          //redirect here
-             //i changed to session storage because i want the cookie to expire each time he closes the browser.
+              Cookies.set("token", resp.data.token, {
+                secure: true,
+                expires: resp.data.tokenExpiryTime,
+                path: "/",
+              });
+              
+          
+              /*
+                you can also  store all data sent by the server side with cookies
+                 Cookies.set('token', resp.data, { secure: true, path: "/" })
+                 you can also store your redux state here.
+
+
+                 
+                */
             }
         } catch (error) {
             console.log(error)
